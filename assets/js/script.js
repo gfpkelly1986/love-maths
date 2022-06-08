@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     for(let button of buttons){  // loop through the HTML collection and on each iteration attatch a click event listener
         button.addEventListener('click', function(){
             if(this.getAttribute('data-type') === 'submit'){  // check the value of the datatype attribute on the element that triggered the event
-                alert('You clicked Submit');                    // if its submit, then alert you clicked
+                checkAnswer();                  // if its submit, then alert you clicked
             } else {
                 let gameType = this.getAttribute('data-type');  //else you clicked, either, multiply, divide, subtract, or addition 
                 runGame(gameType);                         
@@ -36,12 +36,41 @@ function runGame(gameType){
     }
 }
 
-function checkAnswer(){
+/**
+ * Checks the answer against the first element in the
+ * returned calculateCorrectAnswer array.
+ */
 
+function checkAnswer(){
+    let userAnswer = parseInt(document.getElementById('answer-box').value);
+    let calculatedAnswer = calculateCorrectAnswer();
+    let isCorrect = userAnswer === calculatedAnswer[0];
+
+    if(isCorrect){
+        alert('Hey you got it right! :D');
+    }else{
+        alert(`Awww.... you answered ${userAnswer}. The correct answer was ${calculatedAnswer[0]}!`);
+    }
+
+    runGame(calculatedAnswer[1]);
 }
 
-function calculateCorrectAnswer(){
+/**
+ * Gets the operands(numbers) and the operator(plus, minus etc)
+ * directly from the dom and returns the correct answer.
+ */
 
+function calculateCorrectAnswer(){
+    let operand1 = parseInt(document.getElementById('operand1').innerText);
+    let operand2 = parseInt(document.getElementById('operand2').innerText);
+    let operator = document.getElementById('operator').innerText;
+
+    if (operator === '+'){
+        return [operand1 + operand2, 'addition'];
+    }else{
+        alert(`Unimplemented operator ${operator}`);
+        throw `Unimplemented operator ${operator}. Aborting!`;
+    }
 }
 
 function incrementScore(){
