@@ -8,13 +8,20 @@ document.addEventListener('DOMContentLoaded', function() {
     for(let button of buttons){  // loop through the HTML collection and on each iteration attatch a click event listener
         button.addEventListener('click', function(){
             if(this.getAttribute('data-type') === 'submit'){  // check the value of the datatype attribute on the element that triggered the event
-                checkAnswer();                  // if its submit, then alert you clicked
+                checkAnswer();                  // if its submit, then alert you clicked submit
             } else {
                 let gameType = this.getAttribute('data-type');  //else you clicked, either, multiply, divide, subtract, or addition 
                 runGame(gameType);                         
             }
         });
     }
+
+    document.getElementById('answer-box').addEventListener('keydown', function(event){
+        if(event.key === 'Enter'){
+            checkAnswer();
+        }
+    });
+
     runGame('addition');
 });
 
@@ -24,6 +31,9 @@ document.addEventListener('DOMContentLoaded', function() {
  * after the users answer has been processed.
  */
 function runGame(gameType){
+
+    document.getElementById('answer-box').value = '';
+    document.getElementById('answer-box').focus();
     //Generate a random number between 1 and 25, 0 would create problems for division.
     let num1 = Math.floor(Math.random() * 25) +1;
     let num2 = Math.floor(Math.random() * 25) +1;
